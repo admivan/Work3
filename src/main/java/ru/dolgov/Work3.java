@@ -9,6 +9,7 @@ public class Work3 {
     public static int X; // Поле для записи ввода с консоли в числовой игре
     public static String SAY; //Поле для ввода с консоли в игре слово
     public static int RND;// Поле для генерации случайного числа
+
     public static void main(String[] args) {
         String message = "Выбери игру введя 1 угадай чиcло, 2 угадай слово: ";
         startGame(1, 2, message); //Вызов метода для старта игры с 3 параметрами
@@ -24,7 +25,13 @@ public class Work3 {
     public static void startGame(int min, int max, String message) {
         do {
             System.out.println(message);
-            X = scanner.nextInt();
+            if (scanner.hasNextInt()) {
+                X = scanner.nextInt();
+                scanner.nextLine();
+            } else {
+                System.out.println("Вы ввели некоректное число");
+                scanner.nextLine();
+            }
         } while (X > max || X < min);
         if (X == 1) { //Выбор игры, перезапуск или выход
             guessNumber(3, 0, 9);
@@ -33,7 +40,7 @@ public class Work3 {
         } else {
             System.out.println("До встречи!");
             scanner.close();
-            System.exit(0);
+            return;
 
         }
     }
@@ -54,13 +61,19 @@ public class Work3 {
                 System.out.println("У вас осталось " + (life - i) + " попытка!");
             }
             System.out.println("Угадай число от " + min + " до " + max);
-            X = scanner.nextInt(); // Запрос числа с консоли
-            if (RND < X) { //Сравниваем число больше или меньше введенного
-                System.out.println("Число меньше " + X);
-            } else if (RND > X) {
-                System.out.println("Число больше " + X);
-            } else { //Перезапуск игры если выйграли
-                startGame(0, 1, "Вы выграли поздравляю!!! Повторить игру еще раз? 1 – да / 0 – нет");
+            if (scanner.hasNextInt()) {
+                X = scanner.nextInt();
+                scanner.nextLine(); // Запрос числа с консоли
+                if (RND < X) { //Сравниваем число больше или меньше введенного
+                    System.out.println("Число меньше " + X);
+                } else if (RND > X) {
+                    System.out.println("Число больше " + X);
+                } else { //Перезапуск игры если выйграли
+                    startGame(0, 1, "Вы выграли поздравляю!!! Повторить игру еще раз? 1 – да / 0 – нет");
+                }
+            } else {
+                System.out.println("Вы ввели некоректное число");
+                scanner.nextLine();
             }
         }
         System.out.println("У вас не осталось попыток(");//Перезапуск игры если проиграли
@@ -71,25 +84,21 @@ public class Work3 {
      * В процессе
      */
     public static void guessWord() {
-        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado",
+      /*  String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado",
                 "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak",
                 "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear",
                 "pepper", "pineapple", "pumpkin", "potato"};
         char pc;
         char user;
         String str;
-        String notstr="###############";
         RND = random.nextInt(words.length);
-        str=words[RND];
+        str = words[RND];
         System.out.println(words[RND]);
-        SAY = scanner.next();
-        for (int i=0; i<words[RND].length();i++){
-            pc = str.charAt(i);
-            user=SAY.charAt(i);
-            if(pc==user) {
-                user=pc ;
+        do {
+            SAY = scanner.next();
+            for (int i = 0; i < 15; i++) {
+                System.out.print("#");
             }
-            System.out.print(user);
-        }
+        } while (str != SAY);*/
     }
 }
