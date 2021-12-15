@@ -114,21 +114,22 @@ public class Work3 {
              */
             for (int i = 0; i < counter; i++) {
                 pc = str.charAt(i);
-                user = SAY.charAt(i);
+                user = SAY.toLowerCase().charAt(i);
                 if (pc == user) {
                     arr[i] = user;
                 }
             }
             /*
             Если слова не ровны, то выводим массив для маскировки слова
+            так как цикл с пост условием if блокирует вывод если угадал
              */
-            if (!str.equals(SAY)) {
+            if (!str.equalsIgnoreCase(SAY)) {
                 for (char c : arr) {
                     System.out.print(c);
                 }
             }
             System.out.println();
-        } while (!str.equals(SAY));
+        } while (!str.equalsIgnoreCase(SAY));
         startGame(0, 2, "Вы угадали поздравляю!!! слово " + SAY + " Повторить игру еще раз? 2 – да / 0 – нет." +
                 " Может хотите запустить игру в угадай число тогда введите 1");
     }
