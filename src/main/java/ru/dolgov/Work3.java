@@ -11,8 +11,8 @@ public class Work3 {
     public static int RND;// Поле для генерации случайного числа
 
     public static void main(String[] args) {
-        String message = "Выбери игру введя 1 угадай чиcло, 2 угадай слово: ";
-        startGame(1, 2, message); //Вызов метода для старта игры с 3 параметрами
+        String message = "Выбери игру введя 1 угадай чиcло, 2 угадай слово. Для выхода введи 0: ";
+        startGame(0, 2, message); //Вызов метода для старта игры с 3 параметрами
     }
 
     /**
@@ -29,7 +29,7 @@ public class Work3 {
                 X = scanner.nextInt();
                 scanner.nextLine();
             } else {
-                System.out.println("Вы ввели некоректное число");
+                System.out.println("Вы ввели некорректное число");
                 scanner.nextLine();
             }
         } while (X > max || X < min);
@@ -40,20 +40,18 @@ public class Work3 {
         } else {
             System.out.println("До встречи!");
             scanner.close();
-            return;
-
         }
     }
 
     /**
      * Игра в угадай число
      *
-     * @param life прием переменной количестго попыток
+     * @param life прием переменной количество попыток
      * @param min  принимаем минимальное число
      * @param max  принимаем максимальное число
      */
     public static void guessNumber(int life, int min, int max) {
-        RND = random.nextInt(max); //Генирация рандомного числа от 0 до max
+        RND = random.nextInt(max); //Генерация рандомно го числа от 0 до max
         for (int i = 0; i < life; i++) {
             if (i <= 1) { // Вывод количества попыток
                 System.out.println("У вас осталось " + (life - i) + " попытки!");
@@ -68,37 +66,70 @@ public class Work3 {
                     System.out.println("Число меньше " + X);
                 } else if (RND > X) {
                     System.out.println("Число больше " + X);
-                } else { //Перезапуск игры если выйграли
-                    startGame(0, 1, "Вы выграли поздравляю!!! Повторить игру еще раз? 1 – да / 0 – нет");
+                } else {
+                    break;
                 }
             } else {
-                System.out.println("Вы ввели некоректное число");
+                System.out.println("Вы ввели некорректное число");
                 scanner.nextLine();
             }
         }
-        System.out.println("У вас не осталось попыток(");//Перезапуск игры если проиграли
-        startGame(0, 1, "Вы проиграли!!! Повторить игру еще раз? 1 – да / 0 – нет");
+        if (RND == X) {
+            startGame(0, 2, "Вы выбрали поздравляю!!! Повторить игру еще раз? 1 – да / 0 – нет." +
+                    " Может хотите запустить игру в слова тогда введите 2");
+        } else {
+            startGame(0, 2, "Вы проиграли!!! Повторить игру еще раз? 1 – да / 0 – нет." +
+                    " Может хотите запустить игру в слова тогда введите 2");
+        }
     }
 
-    /**
-     * В процессе
+    /*
+     * Игра угадай слово
      */
     public static void guessWord() {
-      /*  String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado",
+        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado",
                 "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak",
                 "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear",
-                "pepper", "pineapple", "pumpkin", "potato"};
-        char pc;
-        char user;
-        String str;
-        RND = random.nextInt(words.length);
-        str = words[RND];
-        System.out.println(words[RND]);
+                "pepper", "pineapple", "pumpkin", "potato"}; // Объявление массива слов
+        char[] arr = {'#', '#', '#', '#', '#', '#', '#', '#', '#',
+                '#', '#', '#', '#', '#', '#'};// Объявление массива для маскировки слова
+        char pc; // Переменна для разбивки слова на символы компьютера
+        char user;// Переменна для разбивки слова на символы человека
+        int counter; //Переменная для запоминания короткого слова
+        String str; //Переменная для запоминания слова пк
+        for (String word : words) {
+            System.out.print(word + ", ");
+        }
+        RND = random.nextInt(words.length + 1); // Выбор рандомно го числа от 0 до длины массива
+        str = words[RND];//Запоминаем слово
+        System.out.println("Я загадал одно слово угадай его!");
         do {
-            SAY = scanner.next();
-            for (int i = 0; i < 15; i++) {
-                System.out.print("#");
+            SAY = scanner.next();//Запрос ввести слово
+            /*
+            Выбираем какое слово короче
+             */
+            counter = Math.min(str.length(), SAY.length());
+            /*
+            пробегаем по всем символам столько сколько символов в коротком слове
+             */
+            for (int i = 0; i < counter; i++) {
+                pc = str.charAt(i);
+                user = SAY.charAt(i);
+                if (pc == user) {
+                    arr[i] = user;
+                }
             }
-        } while (str != SAY);*/
+            /*
+            Если слова не ровны, то выводим массив для маскировки слова
+             */
+            if (!str.equals(SAY)) {
+                for (char c : arr) {
+                    System.out.print(c);
+                }
+            }
+            System.out.println();
+        } while (!str.equals(SAY));
+        startGame(0, 2, "Вы угадали поздравляю!!! слово " + SAY + " Повторить игру еще раз? 2 – да / 0 – нет." +
+                " Может хотите запустить игру в угадай число тогда введите 1");
     }
 }
